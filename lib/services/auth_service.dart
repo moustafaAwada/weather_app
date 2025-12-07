@@ -10,8 +10,8 @@ class AuthService {
   // ⚠️ iOS SIMULATOR: Use 'http://127.0.0.1:8000'
   // ⚠️ REAL DEVICE: Use your PC's IP address (e.g., 'http://192.168.1.5:8000')
   final String baseUrl = kIsWeb 
-        ? 'http://127.0.0.1:8000/api/v1'  // For Web Browser
-        : 'http://10.0.2.2:8000/api/v1';  // For Android Emulator
+        ? 'https://aqsar.yllabena.com/api/v1'  // For Web Browser
+        : 'https://aqsar.yllabena.com/api/v1';  // For Android Emulator
   // --- LOGIN ---
   Future<UserModel> login({required String email, required String password}) async {
     try {
