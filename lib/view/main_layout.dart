@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'home_page.dart'; 
 import 'profile/profile_page.dart';
+import 'history_page.dart'; // Import History Page
 
 class MainLayout extends StatefulWidget {
   const MainLayout({super.key});
@@ -14,6 +15,7 @@ class _MainLayoutState extends State<MainLayout> {
 
   final List<Widget> _pages = [
     HomePage(),     
+    HistoryPage(), // Add History Page as Index 1
     ProfilePage(), 
   ];
 
@@ -22,7 +24,6 @@ class _MainLayoutState extends State<MainLayout> {
     return Scaffold(
       body: _pages[_currentIndex],
 
-      // Styled Bottom Navigation
       bottomNavigationBar: Container(
         decoration: BoxDecoration(
           boxShadow: [
@@ -40,17 +41,22 @@ class _MainLayoutState extends State<MainLayout> {
               _currentIndex = index;
             });
           },
-          selectedItemColor: Colors.orange, // Sun color for active tab
+          selectedItemColor: Colors.orange, 
           unselectedItemColor: Colors.grey,
           showUnselectedLabels: false,
           backgroundColor: Colors.white,
-          elevation: 0,
           type: BottomNavigationBarType.fixed,
           items: [
             BottomNavigationBarItem(
               icon: Icon(Icons.cloud_outlined), 
               activeIcon: Icon(Icons.cloud),
               label: "Weather"
+            ),
+            // NEW HISTORY TAB
+            BottomNavigationBarItem(
+              icon: Icon(Icons.history), 
+              activeIcon: Icon(Icons.history_edu), // Fun icon for active state
+              label: "History"
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.person_outline), 

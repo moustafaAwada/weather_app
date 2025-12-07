@@ -1,43 +1,59 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../models/user_model.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import '../../services/auth_service.dart';
 import 'auth_states.dart';
 
 class AuthCubit extends Cubit<AuthState> {
   AuthCubit() : super(AuthInitial());
 
-  // Mock database for demo purposes
-  UserModel? _currentUser;
+  final AuthService _authService = AuthService();
 
-  void login(String email, String password) async {
+  // Login Logic
+  Future<void> login(String email, String password) async {
     emit(AuthLoading());
-    await Future.delayed(Duration(seconds: 1)); // Simulate API call
-    
-    // Simple mock validation
-    if (email.isNotEmpty && password.length >= 6) {
-      _currentUser = UserModel(name: "User", email: email, password: password);
-      emit(AuthAuthenticated(_currentUser!));
-    } else {
-      emit(AuthError("Invalid email or password"));
+    try {
+      UserModel user = await _authService.login(email: email, password: password);
+      emit(AuthAuthenticated(user: user));
+    } catch (e) {
+      emit(AuthError(message: e.toString()));
     }
   }
 
-  void register(String name, String email, String password) async {
+  // Register Logic
+  Future<void> register(String name, String email, String password, {String? phone}) async {
     emit(AuthLoading());
-    await Future.delayed(Duration(seconds: 1));
-    _currentUser = UserModel(name: name, email: email, password: password);
-    emit(AuthAuthenticated(_currentUser!));
+    try {
+      UserModel user = await _authService.register(
+        name: name, 
+        email: email, 
+        password: password,
+        phone: phone
+      );
+      emit(AuthAuthenticated(user: user));
+    } catch (e) {
+      emit(AuthError(message: e.toString()));
+    }
   }
 
+  // Logout
   void logout() {
-    _currentUser = null;
-    emit(AuthUnauthenticated());
+    emit(AuthInitial());
   }
-
-  void updateUser(String name, String phone) {
-    if (_currentUser != null) {
-      _currentUser!.name = name;
-      _currentUser!.phone = phone;
-      emit(AuthAuthenticated(_currentUser!)); // Emit new state to update UI
-    }
+  
+  // Update User (If you have an endpoint for this)
+  Future<void> updateUser(String name, String phone) async {
+      // For now, we just update the local state. 
+      // You should add an 'updateProfile' method to AuthService later.
+      if (state is AuthAuthenticated) {
+        final currentUser = (state as AuthAuthenticated).user;
+        final updatedUser = UserModel(
+            name: name,
+            email: currentUser.email,
+            password: currentUser.password, // Keep existing
+            phone: phone
+        );
+        emit(AuthAuthenticated(user: updatedUser));
+      }
   }
 }

@@ -25,10 +25,8 @@ class _SearchViewState extends State<SearchView> {
   void _onSearchChanged(String query) {
     if (_debounce?.isActive ?? false) _debounce!.cancel();
     
-    // Change duration to 300ms for snappier feel
     _debounce = Timer(const Duration(milliseconds: 300), () async {
       
-      // CHANGE THIS LINE: Allow search if there is ANY text (length >= 1)
       if (query.isNotEmpty) { 
         setState(() {
           _isLoading = true;
@@ -113,7 +111,7 @@ class _SearchViewState extends State<SearchView> {
                     BoxShadow(
                       color: Colors.black26,
                       blurRadius: 10,
-                      offset: Offset(0, 5),
+                      offset: Offset(0, 100),
                     ),
                   ],
                 ),
