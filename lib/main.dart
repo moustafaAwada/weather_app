@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:weather_app/cubits/get_weather_cubit/get_weather_cubit.dart';
 import 'package:weather_app/cubits/get_weather_cubit/get_weather_states.dart';
-import 'package:weather_app/view/home_page.dart';
+import 'package:weather_app/cubits/auth_cubit/auth_cubit.dart'; 
+import 'package:weather_app/view/auth/login_page.dart'; 
 
 void main() {
   runApp(WeatherApp());
@@ -13,33 +14,33 @@ class WeatherApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => GetweatherCubit(),
+    return MultiBlocProvider( // Changed from BlocProvider to MultiBlocProvider
+      providers: [
+        BlocProvider(create: (context) => GetweatherCubit()),
+        BlocProvider(create: (context) => AuthCubit()), // Inject Auth Logic
+      ],
       child: Builder(
-        builder:
-            (context) => BlocBuilder<GetweatherCubit, WeatherState>(
-              builder: (context, state) {
-                return MaterialApp(
-                  theme: ThemeData(
-                    primarySwatch: getThemeColor(
-                      BlocProvider.of<GetweatherCubit>(
-                        context,
-                      ).weatherModel?.weahterCondition,
-                    ),
-                    appBarTheme: AppBarTheme(
-                      backgroundColor: getThemeColor(
-                        BlocProvider.of<GetweatherCubit>(
-                          context,
-                        ).weatherModel?.weahterCondition,
-                      ),
-                    ),
-                    
+        builder: (context) => BlocBuilder<GetweatherCubit, WeatherState>(
+          builder: (context, state) {
+            return MaterialApp(
+              theme: ThemeData(
+                // Your existing theme logic
+                primarySwatch: getThemeColor(
+                  BlocProvider.of<GetweatherCubit>(context).weatherModel?.weahterCondition,
+                ),
+                appBarTheme: AppBarTheme(
+                  backgroundColor: getThemeColor(
+                    BlocProvider.of<GetweatherCubit>(context).weatherModel?.weahterCondition,
                   ),
-                  debugShowCheckedModeBanner: false,
-                  home: HomePage(),
-                );
-              },
-            ),
+                ),
+              ),
+              debugShowCheckedModeBanner: false,
+              
+              // Start at LoginPage instead of HomePage
+              home: LoginPage(), 
+            );
+          },
+        ),
       ),
     );
   }

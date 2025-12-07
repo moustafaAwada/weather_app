@@ -12,37 +12,75 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      // 1. Extend body behind AppBar so the gradient covers the status bar area
+      extendBodyBehindAppBar: true, 
+      
       appBar: AppBar(
+        backgroundColor: Colors.transparent, 
+        elevation: 0,
+        centerTitle: true,
         title: Row(
+          mainAxisSize: MainAxisSize.min,
           children: [
-            Text('WTHEAR APP', style: TextStyle(fontWeight: FontWeight.bold)),
-            Spacer(flex: 1),
-            IconButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) {
-                      return SearchView();
-                    },
-                  ),
-                );
-              },
-              icon: Icon(Icons.search),
+            Icon(Icons.wb_cloudy_rounded, color: Colors.white),
+            SizedBox(width: 10),
+            Text(
+              'WEATHER APP', 
+              style: TextStyle(
+                fontWeight: FontWeight.bold, 
+                color: Colors.white,
+                letterSpacing: 1.2
+              )
             ),
           ],
         ),
+        actions: [
+          Container(
+            margin: EdgeInsets.only(right: 15),
+            decoration: BoxDecoration(
+              color: Colors.white.withOpacity(0.2), 
+              shape: BoxShape.circle,
+            ),
+            child: IconButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => SearchView()),
+                );
+              },
+              icon: Icon(Icons.search, color: Colors.white),
+            ),
+          ),
+        ],
       ),
-      body: BlocBuilder<GetweatherCubit, WeatherState>(
-        builder: (context, state) {
-          if (state is InitialState) {
-            return WeatherEmpty();
-          } else if (state is WeatherLoadedState) {
-            return WeatherIsThere();
-          } else {
-            return Text('oops there was an error , please try later');
-          }
-        },
+      // 2. Wrap everything in the Blue Gradient Container
+      body: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [Colors.blue.shade800, Colors.blue.shade300],
+          ),
+        ),
+        child: BlocBuilder<GetweatherCubit, WeatherState>(
+          builder: (context, state) {
+            if (state is InitialState) {
+              // Now WeatherEmpty will sit ON TOP of the blue gradient
+              return WeatherEmpty();
+            } else if (state is WeatherLoadedState) {
+              // WeatherIsThere handles its own specific weather gradient
+              return WeatherIsThere();
+            } else {
+              // Error State
+              return Center(
+                child: Text(
+                  'Oops there was an error, please try later',
+                  style: TextStyle(color: Colors.white, fontSize: 18),
+                )
+              );
+            }
+          },
+        ),
       ),
     );
   }
