@@ -14,11 +14,12 @@ class ProfilePage extends StatelessWidget {
       // 1. Consistent Blue Sky Gradient
       decoration: BoxDecoration(
         gradient: LinearGradient(
-          begin: Alignment.topCenter,
-          end: Alignment.bottomCenter,
-          colors: [Colors.blue.shade800, Colors.blue.shade300],
+          begin: Alignment.topLeft,
+          end: Alignment.centerRight,
+          colors: [Colors.blue.shade800, const Color.fromARGB(255, 206, 85, 5)],
         ),
       ),
+
       child: BlocBuilder<AuthCubit, AuthState>(
         builder: (context, state) {
           if (state is AuthAuthenticated) {
@@ -29,6 +30,7 @@ class ProfilePage extends StatelessWidget {
                   children: [
                     // 2. Avatar with Shadow and Border
                     Container(
+                    
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
                         border: Border.all(color: Colors.white, width: 4),
@@ -40,12 +42,15 @@ class ProfilePage extends StatelessWidget {
                           ),
                         ],
                       ),
+                    
                       child: CircleAvatar(
                         radius: 60,
                         backgroundColor: Colors.white,
-                        child: Icon(Icons.person, size: 70, color: Colors.blue.shade300),
+                        child: Icon(Icons.person, size: 70, color: const Color.fromARGB(255, 206, 85, 5)),
                       ),
+                    
                     ),
+
                     SizedBox(height: 20),
                     
                     Text(
@@ -57,7 +62,7 @@ class ProfilePage extends StatelessWidget {
                       ),
                     ),
                     Text(
-                      "Weather Enthusiast", 
+                      state.user.email,
                       style: TextStyle(color: Colors.white70, fontSize: 16),
                     ),
                     SizedBox(height: 30),
@@ -65,18 +70,29 @@ class ProfilePage extends StatelessWidget {
                     // 3. Info Card
                     Container(
                       padding: EdgeInsets.all(20),
+
                       decoration: BoxDecoration(
-                        color: Colors.white.withOpacity(0.95),
+                        gradient: LinearGradient(
+                          begin: Alignment.topLeft,
+                          end: Alignment.centerRight,
+                          colors: [const Color.fromARGB(255, 238, 99, 6), const Color.fromARGB(255, 49, 20, 1)],
+                        ),
+
+                        // color: Colors.white.withOpacity(0.95),
                         borderRadius: BorderRadius.circular(20),
                         boxShadow: [
                           BoxShadow(color: Colors.black12, blurRadius: 10, offset: Offset(0, 4)),
                         ],
                       ),
+
                       child: Column(
                         children: [
                           _buildInfoTile(Icons.email, "Email", state.user.email),
-                          Divider(),
+                          SizedBox(height: 10),
+                          _buildInfoTile(Icons.phone, "City", state.user.phone ?? "Not set"),
+                          SizedBox(height: 10),
                           _buildInfoTile(Icons.phone, "Phone", state.user.phone ?? "Not set"),
+
                           SizedBox(height: 20),
                           
                           // Edit Button
@@ -130,8 +146,8 @@ class ProfilePage extends StatelessWidget {
         decoration: BoxDecoration(color: Colors.blue.shade50, borderRadius: BorderRadius.circular(8)),
         child: Icon(icon, color: Colors.blue),
       ),
-      title: Text(title, style: TextStyle(fontSize: 12, color: Colors.grey)),
-      subtitle: Text(value, style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.black87)),
+      title: Text(title, style: TextStyle(fontSize: 12, color: const Color.fromARGB(255, 255, 255, 255))),
+      subtitle: Text(value, style: TextStyle( fontSize: 16, fontWeight: FontWeight.bold, color: const Color.fromARGB(221, 255, 255, 255))),
     );
   }
 }

@@ -46,6 +46,7 @@ class AuthService {
     required String email,
     required String password,
     String? phone,
+    String? city,
   }) async {
     try {
       Response response = await _dio.post(
@@ -55,6 +56,7 @@ class AuthService {
           'email': email,
           'password': password,
           'phone': phone ?? "", 
+          'city': city ?? "", 
         },
       );
 
@@ -64,7 +66,7 @@ class AuthService {
          return UserModel.fromJson(response.data['user']);
       } else {
          // If it just returns "Success", you might need to login immediately or return a dummy
-         return UserModel(name: name, email: email, password: password, phone: phone);
+         return UserModel(name: name, email: email, password: password, phone: phone, city:city);
       }
 
     } on DioException catch (e) {

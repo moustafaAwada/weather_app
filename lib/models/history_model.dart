@@ -19,6 +19,7 @@ class HistoryModel {
       'temp': temp,
       'condition': condition,
       'icon': icon,
+      'search_time': searchTime.toIso8601String(),
     };
   }
 

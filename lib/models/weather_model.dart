@@ -1,5 +1,5 @@
 class WeatherModel {
-  final String cityName;
+  String cityName;
   final DateTime date;
   final String? image;
   final double temp;

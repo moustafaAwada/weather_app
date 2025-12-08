@@ -21,14 +21,15 @@ class AuthCubit extends Cubit<AuthState> {
   }
 
   // Register Logic
-  Future<void> register(String name, String email, String password, {String? phone}) async {
+  Future<void> register(String name, String email, String password, String? phone, String? city) async {
     emit(AuthLoading());
     try {
       UserModel user = await _authService.register(
         name: name, 
         email: email, 
         password: password,
-        phone: phone
+        phone: phone,
+        city: city,
       );
       emit(AuthAuthenticated(user: user));
     } catch (e) {

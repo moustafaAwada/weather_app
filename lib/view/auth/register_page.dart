@@ -6,6 +6,8 @@ class RegisterPage extends StatelessWidget {
   final TextEditingController nameController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
+  final TextEditingController cityController = TextEditingController();
+  final TextEditingController phoneController = TextEditingController();
 
   RegisterPage({super.key});
 
@@ -21,7 +23,12 @@ class RegisterPage extends StatelessWidget {
           icon: Icon(Icons.arrow_back_ios, color: Colors.white),
           onPressed: () => Navigator.pop(context),
         ),
+        title: Text(
+          "Login",
+          style: TextStyle(color: Colors.white),
+        ),
       ),
+
       body: Container(
         height: double.infinity,
         decoration: BoxDecoration(
@@ -31,6 +38,7 @@ class RegisterPage extends StatelessWidget {
             colors: [Colors.orange.shade400, Colors.orange.shade800], // Sunset/Sunrise colors
           ),
         ),
+
         child: Center(
           child: SingleChildScrollView(
             padding: const EdgeInsets.all(24.0),
@@ -48,6 +56,7 @@ class RegisterPage extends StatelessWidget {
                     color: Colors.white,
                   ),
                 ),
+
                 SizedBox(height: 30),
 
                 // Register Form Card
@@ -64,6 +73,7 @@ class RegisterPage extends StatelessWidget {
                       ),
                     ],
                   ),
+
                   child: Column(
                     children: [
                       // Name Field
@@ -77,6 +87,7 @@ class RegisterPage extends StatelessWidget {
                           fillColor: Colors.grey.shade50,
                         ),
                       ),
+
                       SizedBox(height: 15),
 
                       // Email Field
@@ -90,6 +101,7 @@ class RegisterPage extends StatelessWidget {
                           fillColor: Colors.grey.shade50,
                         ),
                       ),
+
                       SizedBox(height: 15),
 
                       // Password Field
@@ -104,6 +116,39 @@ class RegisterPage extends StatelessWidget {
                           fillColor: Colors.grey.shade50,
                         ),
                       ),
+
+                      SizedBox(height: 15),
+
+                      // Password Field
+                      TextField(
+                        controller: cityController,
+                        decoration: InputDecoration(
+                          labelText: "City",
+                          prefixIcon: Icon(Icons.vpn_key, color: Colors.orange),
+                          border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+                          filled: true,
+                          fillColor: Colors.grey.shade50,
+                        ),
+                      ),
+
+
+
+                      SizedBox(height: 15),
+
+                      // Password Field
+                      TextField(
+                        controller: phoneController,
+                        decoration: InputDecoration(
+                          labelText: "Phone",
+                          prefixIcon: Icon(Icons.vpn_key, color: Colors.orange),
+                          border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+                          filled: true,
+                          fillColor: Colors.grey.shade50,
+                        ),
+                      ),
+
+
+
                       SizedBox(height: 25),
 
                       // Sign Up Button
@@ -113,6 +158,8 @@ class RegisterPage extends StatelessWidget {
                             nameController.text,
                             emailController.text,
                             passwordController.text,
+                            phoneController.text,
+                            cityController.text,
                           );
                           Navigator.pop(context); 
                         },
@@ -127,6 +174,7 @@ class RegisterPage extends StatelessWidget {
                         ),
                         child: Text("SIGN UP", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
                       ),
+
                     ],
                   ),
                 ),

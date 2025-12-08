@@ -10,19 +10,29 @@ class GetweatherCubit extends Cubit<WeatherState> {
   
   WeatherModel? weatherModel;
 
-  getWeather({required String cityName}) async {
+  final WeatherService weatherService = WeatherService(Dio());
+
+  Future<void> getWeather({required String cityName}) async {
     emit(WeatherLoadingState());
     try {
-      // 1. Get Weather from API
-      weatherModel = await WeatherService(Dio()).getCurrentWeahter(cityName: cityName);
-      
-      // 2. Save to Django Database (Background process)
+      weatherModel = await weatherService.getCurrentWeahter(cityName: cityName);
+
       if (weatherModel != null) {
-        // We don't await this, so it doesn't slow down the UI
         HistoryService().addToHistory(weatherModel!);
       }
 
       emit(WeatherLoadedState());
+    } catch (e) {
+      emit(WeatherFailureState());
+    }
+  }
+
+  Future<void> getWeatherByUserCity(String city) async {
+    emit(WeatherLoadingState());
+    try {
+      final weather = await weatherService.getCurrentWeahter(cityName: city);
+      weatherModel = weather;
+      emit(WeatherLoadedByUserCityState(weatherModel: weather));
     } catch (e) {
       emit(WeatherFailureState());
     }

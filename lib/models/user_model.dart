@@ -3,12 +3,14 @@ class UserModel {
   String email;
   String password; // Note: Usually we don't store password from API, but keeping for your existing structure
   String? phone;
+  String? city;
 
   UserModel({
     required this.name,
     required this.email,
     required this.password,
     this.phone,
+    this.city,
   });
 
   // Factory to create User from API JSON
@@ -20,6 +22,7 @@ class UserModel {
       // We can leave it empty or handled by the token storage.
       password: '', 
       phone: json['phone'],
+      city: json['city'],
     );
   }
 }
